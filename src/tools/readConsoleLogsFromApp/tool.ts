@@ -187,17 +187,22 @@ export const readConsoleLogsFromAppTool: ToolRegistration<ReadConsoleLogsFromApp
 		description:
 			'Reads console logs from a connected React Native app through the debugger WebSocket',
 		inputSchema: makeJsonSchema(readConsoleLogsFromAppSchema),
-		handler: async ({ app, maxLogs }: ReadConsoleLogsFromAppSchema) => {
-			try {
-			const parsedArgs = readConsoleLogsFromAppSchema.parse({ app, maxLogs });
-			const logs = await readConsoleLogsFromApp(
-				parsedArgs.app,
-				parsedArgs.maxLogs,
-			);
+	handler: async ({ app, maxLogs, regexp }: ReadConsoleLogsFromAppSchema) => {
+		try {
+		const parsedArgs = readConsoleLogsFromAppSchema.parse({ app, maxLogs, regexp });
+		const logs = await readConsoleLogsFromApp(
+			parsedArgs.app,
+			parsedArgs.maxLogs,
+		);
 
-			// Format logs as plain text, one per line
-			// For errors/warnings, include additional context
-			const formattedLogs = logs.map(log => {
+		// Filter logs by regexp if provided
+		const filteredLogs = parsedArgs.regexp
+			? logs.filter((log) => new RegExp(parsedArgs.regexp as string).test(log.text))
+			: logs;
+
+		// Format logs as plain text, one per line
+		// For errors/warnings, include additional context
+		const formattedLogs = filteredLogs.map(log => {
 				const prefix = log.level === 'error' ? '❌ ERROR: ' : 
 				               log.level === 'warning' ? '⚠️  WARNING: ' : '';
 				let output = `${prefix}${log.text}`;

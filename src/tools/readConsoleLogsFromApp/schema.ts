@@ -15,6 +15,12 @@ export const readConsoleLogsFromAppSchema = z.object({
 		.number()
 		.optional()
 		.describe('Maximum number of logs to return (default: 100)'),
+	regexp: z
+		.string()
+		.optional()
+		.describe(
+			'Optional regular expression pattern to filter logs. Only logs matching this pattern will be returned.',
+		),
 });
 
 export type ReadConsoleLogsFromAppSchema = z.infer<
