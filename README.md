@@ -1,76 +1,58 @@
 # React Native Enhanced Debugger MCP
 
-An MCP server that connects to your React Native application debugger via the Chrome DevTools Protocol.
+An MCP server that lets AI assistants read console logs from your React Native app in real-time.
 
-**This is a fork of [twodoorsdev/react-native-debugger-mcp](https://github.com/twodoorsdev/react-native-debugger-mcp)** optimized to minimize AI context usage by reducing verbose output. Console logs are returned as plain text rather than JSON, and stack traces are only included for errors and warnings.
+## Features
 
-## ✨ Key Features
+- **Read console logs** from any connected React Native app via Metro
+- **Filter logs with regex** to find exactly what you're looking for
+- **Plain text output** keeps AI context usage minimal
+- **Smart error handling** with stack traces only for errors and warnings
+- **Full fidelity** — captures multi-line strings, objects, arrays, and complex data structures
 
--   **Token-Efficient Output**: Console logs are formatted as plain text (one per line) instead of verbose JSON, reducing context usage by ~98%
--   **Smart Stack Traces**: Full stack traces are only included for errors and warnings, not for regular log messages
--   **Regex Filtering**: Filter logs using regular expressions to focus on specific messages
--   **Complete Console Log Retrieval**: Captures full console output from Metro bundler including:
-    -   Multi-line strings and template literals
-    -   Complete object structures with nested properties
-    -   Arrays with all elements and their types
-    -   Complex data structures (Maps, Sets, Dates, etc.)
-    -   Error objects with full stack traces
-    -   All console levels (log, info, warn, error, debug)
+## Quick Start
 
--   **Enhanced Formatting**: Uses Chrome DevTools Protocol's rich formatting to preserve:
-    -   Original object structure and formatting
-    -   Multi-line content without truncation
-    -   Proper type representation for all JavaScript values
-    -   Readable output for debugging complex applications
-
-## 🚀 Quick Start
-
-Add the following to your Claude Desktop/Cursor MCP config:
+Add to your Claude Desktop or Cursor MCP config:
 
 ```json
 {
-	"mcpServers": {
-		"react-native-enhanced-debugger-mcp": {
-			"command": "npx",
-			"args": ["-y", "@realmikekelly/react-native-enhanced-debugger-mcp"]
-		}
-	}
+  "mcpServers": {
+    "react-native-enhanced-debugger-mcp": {
+      "command": "npx",
+      "args": ["-y", "@realmikekelly/react-native-enhanced-debugger-mcp"]
+    }
+  }
 }
 ```
 
-## 🔧 Available Tools
+## Tools
 
 ### `getConnectedApps`
 
-Retrieves a list of React Native applications currently connected to the Metro bundler.
+Get a list of React Native apps connected to Metro.
 
-**Parameters:**
-
--   `metroServerPort` (number): The port number of the Metro server (default: 8081)
-
-**Returns:** Array of connected app objects with WebSocket debugger URLs.
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `metroServerPort` | number | Metro server port (default: 8081) |
 
 ### `readConsoleLogsFromApp`
 
-Reads console logs from a connected React Native application through the Chrome DevTools Protocol.
+Read console logs from a connected app.
 
-**Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `app` | object | App object from `getConnectedApps` |
+| `maxLogs` | number | Max logs to return (default: 100) |
+| `regexp` | string | Regex pattern to filter logs |
 
--   `app` (object): App object returned by `getConnectedApps`
--   `maxLogs` (number, optional): Maximum number of logs to return (default: 100)
--   `regexp` (string, optional): Regular expression pattern to filter logs. Only logs matching this pattern will be returned.
+## Example
 
-**Returns:** Plain text console output with one log per line. Errors and warnings are prefixed with ❌ ERROR: or ⚠️ WARNING: and include the top stack frame for context.
+```
+1. Call getConnectedApps to find your app
+2. Call readConsoleLogsFromApp with the app object
+3. Use regexp to filter: "error|warning" or "MyComponent"
+```
 
-## 📋 Example Usage
+## License
 
-1. **Get connected apps:**
-
-    ```
-    Call getConnectedApps with metroServerPort: 8081
-    ```
-
-2. **Read console logs:**
-    ```
-    Call readConsoleLogsFromApp with the app object and desired maxLogs
-    ```
+MIT
