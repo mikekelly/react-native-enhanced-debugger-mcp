@@ -1,4 +1,4 @@
-# React Native Logs MCP
+# React Native Enhanced Debugger MCP
 
 An MCP server that connects to your React Native application debugger via the Chrome DevTools Protocol.
 
@@ -8,6 +8,7 @@ An MCP server that connects to your React Native application debugger via the Ch
 
 -   **Token-Efficient Output**: Console logs are formatted as plain text (one per line) instead of verbose JSON, reducing context usage by ~98%
 -   **Smart Stack Traces**: Full stack traces are only included for errors and warnings, not for regular log messages
+-   **Regex Filtering**: Filter logs using regular expressions to focus on specific messages
 -   **Complete Console Log Retrieval**: Captures full console output from Metro bundler including:
     -   Multi-line strings and template literals
     -   Complete object structures with nested properties
@@ -29,9 +30,9 @@ Add the following to your Claude Desktop/Cursor MCP config:
 ```json
 {
 	"mcpServers": {
-		"react-native-logs-mcp": {
+		"react-native-enhanced-debugger-mcp": {
 			"command": "npx",
-			"args": ["-y", "@realmikekelly/react-native-logs-mcp"]
+			"args": ["-y", "@realmikekelly/react-native-enhanced-debugger-mcp"]
 		}
 	}
 }
@@ -57,6 +58,7 @@ Reads console logs from a connected React Native application through the Chrome 
 
 -   `app` (object): App object returned by `getConnectedApps`
 -   `maxLogs` (number, optional): Maximum number of logs to return (default: 100)
+-   `regexp` (string, optional): Regular expression pattern to filter logs. Only logs matching this pattern will be returned.
 
 **Returns:** Plain text console output with one log per line. Errors and warnings are prefixed with ❌ ERROR: or ⚠️ WARNING: and include the top stack frame for context.
 

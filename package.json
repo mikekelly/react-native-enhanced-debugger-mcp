@@ -1,5 +1,5 @@
 {
-  "name": "@realmikekelly/react-native-logs-mcp",
+  "name": "@realmikekelly/react-native-enhanced-debugger-mcp",
   "description": "An MCP server that connects to your React Native application debugger (fork optimized for AI context efficiency)",
   "version": "1.1.0",
   "author": {
@@ -10,12 +10,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mikekelly/react-native-logs-mcp.git"
+    "url": "https://github.com/mikekelly/react-native-enhanced-debugger-mcp.git"
   },
   "module": "main.ts",
   "type": "module",
   "bin": {
-    "react-native-logs-mcp": "dist/main.js"
+    "react-native-enhanced-debugger-mcp": "dist/main.js"
   },
   "files": [
     "dist"
