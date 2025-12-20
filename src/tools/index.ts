@@ -1,5 +1,6 @@
 import type { ToolRegistration } from '@/types';
 // import { someFunctionTool } from "./exampleTool";
+import { executeInAppTool } from './executeInApp/tool';
 import { getConnectedAppsTool } from './getConnectedApps/tool';
 import { readConsoleLogsFromAppTool } from './readConsoleLogsFromApp/tool';
 
@@ -16,10 +17,16 @@ export const createTools = (): ToolRegistration<any>[] => {
 			// biome-ignore lint/suspicious/noExplicitAny: All tools validate their input schemas, so any is fine.
 			handler: (args: any) => readConsoleLogsFromAppTool.handler(args),
 		},
+		{
+			...executeInAppTool,
+			// biome-ignore lint/suspicious/noExplicitAny: All tools validate their input schemas, so any is fine.
+			handler: (args: any) => executeInAppTool.handler(args),
+		},
 	];
 };
 
 export const tools = [
 	readConsoleLogsFromAppTool,
 	getConnectedAppsTool,
+	executeInAppTool,
 ] as const;
