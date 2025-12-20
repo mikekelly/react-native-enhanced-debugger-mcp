@@ -1,16 +1,11 @@
 import { z } from 'zod';
-import type { GetConnectedAppsSchema } from '../getConnectedApps/schema';
 
+// Flattened schema to work around Cursor MCP limitation with nested object parameters
+// See: https://forum.cursor.com/t/cursor-auto-selected-model-stringifies-mcp-tool-parameters/145807
 export const readConsoleLogsFromAppSchema = z.object({
-	app: z
-		.object({
-			id: z.string().describe('The Metro application ID'),
-			description: z.string().describe(`The Metro application's bundle ID`),
-			webSocketDebuggerUrl: z
-				.string()
-				.describe('The websocket debugger URL for the application'),
-		})
-		.describe('The app object as returned by getConnectedApps'),
+	webSocketDebuggerUrl: z
+		.string()
+		.describe('The websocket debugger URL for the application (from getConnectedApps response)'),
 	maxLogs: z
 		.number()
 		.optional()

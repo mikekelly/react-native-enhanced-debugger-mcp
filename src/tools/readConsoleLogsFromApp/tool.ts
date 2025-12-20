@@ -104,11 +104,11 @@ export function formatConsoleArgument(arg: RemoteObject): string {
 }
 
 export const readConsoleLogsFromApp = async (
-	app: { id: string; description: string; webSocketDebuggerUrl: string },
+	webSocketDebuggerUrl: string,
 	maxLogs = 100,
 ): Promise<ConsoleMessage[]> => {
 	return new Promise((resolve, reject) => {
-		const ws = new WebSocket(app.webSocketDebuggerUrl);
+		const ws = new WebSocket(webSocketDebuggerUrl);
 		const logs: ConsoleMessage[] = [];
 		let messageId = 1;
 
@@ -183,15 +183,14 @@ export const readConsoleLogsFromApp = async (
 
 export const readConsoleLogsFromAppTool: ToolRegistration<ReadConsoleLogsFromAppSchema> =
 	{
-		name: 'readConsoleLogsFromApp',
-		description:
-			'Reads console logs from a connected React Native app through the debugger WebSocket',
+		name: 'getAppLogs',
+		description: 'Get logs from connected React Native app',
 		inputSchema: makeJsonSchema(readConsoleLogsFromAppSchema),
-	handler: async ({ app, maxLogs, regexp }: ReadConsoleLogsFromAppSchema) => {
+	handler: async ({ webSocketDebuggerUrl, maxLogs, regexp }: ReadConsoleLogsFromAppSchema) => {
 		try {
-		const parsedArgs = readConsoleLogsFromAppSchema.parse({ app, maxLogs, regexp });
+		const parsedArgs = readConsoleLogsFromAppSchema.parse({ webSocketDebuggerUrl, maxLogs, regexp });
 		const logs = await readConsoleLogsFromApp(
-			parsedArgs.app,
+			parsedArgs.webSocketDebuggerUrl,
 			parsedArgs.maxLogs,
 		);
 
